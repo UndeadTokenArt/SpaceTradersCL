@@ -49,8 +49,6 @@ func main() {
 	}
 }
 
-// Registers a new User with SpaceTrader
-
 // View contracts for the existing client
 func viewMy(route string) {
 	err := godotenv.Load()
@@ -61,7 +59,6 @@ func viewMy(route string) {
 
 	// Validation info for requests
 	var Validation = models.Validation{
-		ContentType:   "application/json",
 		Authorization: token,
 	}
 	// Set the request
@@ -92,13 +89,13 @@ func viewMy(route string) {
 
 	prettyjson, err := json.MarshalIndent(responseBody, "", "  ")
 	if err != nil {
-		fmt.Println("error marshal indend", err)
+		fmt.Println("error marshal Indent", err)
 	}
 
 	fmt.Println(string(prettyjson))
 }
 
-// Options for viewing Faction details
+// viewing details of selected faction
 func viewfaction(route string) {
 	response, err := STRequests.GetResponse(route)
 	if err != nil {
