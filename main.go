@@ -8,12 +8,16 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Println("Please choose an option:")
@@ -49,6 +53,17 @@ func main() {
 
 // View contracts for the existing client
 func viewMy(route string) {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	token := os.Getenv("TOKEN")
+
+	// Validation info for requests
+	var Validation = models.Validation{
+		ContentType:   "application/json",
+		Authorization: token,
+	}
 	// Set the request
 	request, err := http.NewRequest("GET", route, nil)
 	if err != nil {
@@ -57,7 +72,7 @@ func viewMy(route string) {
 	}
 
 	// Set headers
-	request.Header.Set("Authorization", constants.Validation.Authorization)
+	request.Header.Set("Authorization", Validation.Authorization)
 
 	// Send the request
 	httpClient := &http.Client{}

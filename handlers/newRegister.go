@@ -6,9 +6,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/joho/godotenv"
 )
 
 func SetUserName() map[string]string {
@@ -46,6 +49,11 @@ func SetUserName() map[string]string {
 }
 
 func RegisterNewClient(userDetails map[string]string) {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	token := os.Getenv("TOKEN")
 
 	payload := map[string]string{
 		"symbol":  userDetails["symbol"],
@@ -67,7 +75,7 @@ func RegisterNewClient(userDetails map[string]string) {
 	}
 
 	// Set headers
-	request.Header.Set("Content-Type", constants.Validation.ContentType)
+	request.Header.Set("Content-Type", token)
 
 	// Send the request
 	httpClient := &http.Client{}
